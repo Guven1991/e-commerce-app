@@ -7,12 +7,21 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Alert,
 } from "@chakra-ui/react";
 
 import { useFormik } from "formik";
 import validationSchema from "./validations";
+import { fetchRegister } from "../../../api";
+
+import {useAuth} from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+
+  const {login} =useAuth();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -22,7 +31,18 @@ function Signup() {
     validationSchema,
 
     onSubmit: async (values, bag) => {
-      console.log(values);
+      try {
+        const registerResponse = await fetchRegister({
+          email: values.email,
+          password: values.password,
+        });
+
+        login(registerResponse);
+        navigate('/profile');
+        console.log(registerResponse);
+      } catch (error) {
+        bag.setErrors({ general: error.response.data.message });
+      }
     },
   });
 
@@ -32,6 +52,11 @@ function Signup() {
         <Box pt={10}>
           <Box textAlign="center">
             <Heading>Sign Up</Heading>
+          </Box>
+          <Box>
+            {formik.errors.general && (
+              <Alert status="error">{formik.errors.general}</Alert>
+            )}
           </Box>
           <Box textAlign="left" margin={5}>
             <form onSubmit={formik.handleSubmit}>
@@ -64,7 +89,10 @@ function Signup() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.passwordConfirm}
-                  isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+                  isInvalid={
+                    formik.touched.passwordConfirm &&
+                    formik.errors.passwordConfirm
+                  }
                 />
               </FormControl>
 
