@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import { PrivateRoute } from "./pages/PrivateRoute";
 import Basket from "./pages/Basket";
 import Error404 from "./pages/Error404";
+import Admin from "./pages/Admin";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/admin" element={<PrivateRoute admin ={true} ><Admin/></PrivateRoute>} />
           <Route path="/basket" element={<Basket />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
