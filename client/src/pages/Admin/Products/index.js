@@ -1,8 +1,8 @@
-import { Text } from "@chakra-ui/react";
+import { Text,Button, Flex } from "@chakra-ui/react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { fetchProductList, deleteProduct } from "../../../api";
 import { Popconfirm, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 function AdminProducts() {
   const { isLoading, isError, data, error } = useQuery(
@@ -68,12 +68,18 @@ function AdminProducts() {
   }
   return (
     <div>
+      <Flex justifyContent="space-between" alignItems="center">
       <Text fontSize="2xl" p="5">
         Products
       </Text>
-
+      <Link to="new">
+      <Button>
+        New
+      </Button></Link>
+      </Flex>
       <Table dataSource={data} columns={columns} rowKey="_id"></Table>
     </div>
+    
   );
 }
 
