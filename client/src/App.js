@@ -10,7 +10,10 @@ import { PrivateRoute } from "./pages/PrivateRoute";
 import Basket from "./pages/Basket";
 import Error404 from "./pages/Error404";
 import Admin from "./pages/Admin";
+import Orders from "./pages/Admin/Orders";
 
+import Home from "./pages/Admin/Home";
+import AdminProducts from "./pages/Admin/Products";
 
 function App() {
   return (
@@ -22,8 +25,27 @@ function App() {
           <Route path="/product/:product_id" element={<ProductDetail />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-          <Route path="/admin" element={<PrivateRoute admin ={true} ><Admin/></PrivateRoute>} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute admin={true}>
+                <Admin />
+              </PrivateRoute>
+            }
+          >
+            <Route path="" element={<Home />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="products" element={<AdminProducts />} />
+          </Route>
+
           <Route path="/basket" element={<Basket />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
